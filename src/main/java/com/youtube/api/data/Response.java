@@ -13,12 +13,12 @@ class Response {
     request.send(ar ->{
       if (ar.succeeded()){
         HttpResponse<Buffer> response = ar.result();
-        responses.putHeader("content-type", "application/json");
-        responses.end(response.bodyAsString());
+        responses.putHeader("content-type", "application/json")
+          .end(response.bodyAsString());
       } else {
         System.out.println("Err := " + ar.cause().getMessage());
-        responses.putHeader("content-type", "application/json");
-        responses.end(ar.cause().getMessage());
+        responses.putHeader("content-type", "application/json")
+          .end(ar.cause().getMessage());
       }
     });
   }
@@ -29,8 +29,8 @@ class Response {
     request.send(ar ->{
       if (ar.succeeded()){
         HttpResponse<Buffer> response = ar.result();
-        responses.putHeader("content-type", "application/json");
-        responses.end(response.bodyAsString());
+        responses.putHeader("content-type", "application/json")
+          .end(response.bodyAsString());
         String data = response.bodyAsString();
         requestRelate.addQueryParam("part", "snippet")
           .addQueryParam("relatedToVideoId", id)
@@ -56,8 +56,8 @@ class Response {
         });
       } else {
         System.out.println("Err := " + ar.cause().getMessage());
-        responses.putHeader("content-type", "application/json");
-        responses.end(ar.cause().getMessage());
+        responses.putHeader("content-type", "application/json")
+          .end(ar.cause().getMessage());
       }
     });
   }

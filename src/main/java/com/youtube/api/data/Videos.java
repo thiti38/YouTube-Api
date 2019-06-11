@@ -27,8 +27,8 @@ public class Videos {
             res = row.getString(0);
           }
           System.out.println("Succeed to SELECT := " + id);
-          responses.putHeader("content-type", "application/json");
-          responses.end(res);
+          responses.putHeader("content-type", "application/json")
+            .end(res);
         } else {
           HttpRequest<Buffer> request = client.getAbs(API_URL + "videos")
             .addQueryParam("id", id)
