@@ -3,11 +3,14 @@ package com.youtube.api.data;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonArray;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 
 class Response {
+  private static Logger logger = LoggerFactory.getLogger(Response.class.getName());
   Response(HttpRequest<Buffer> request, HttpServerResponse responses, String API_KEY){
     request.addQueryParam("key", API_KEY);
     request.send(ar ->{
@@ -16,7 +19,7 @@ class Response {
         responses.putHeader("content-type", "application/json")
           .end(response.bodyAsString());
       } else {
-        System.out.println("Err := " + ar.cause().getMessage());
+        logger.error("Error := " + ar.cause().getMessage());
         responses.putHeader("content-type", "application/json")
           .end(ar.cause().getMessage());
       }
@@ -51,11 +54,11 @@ class Response {
               }
             });
           } else {
-            System.out.println("Err := " + res.cause().getMessage());
+            logger.error("Error := " + res.cause().getMessage());
           }
         });
       } else {
-        System.out.println("Err := " + ar.cause().getMessage());
+        logger.error("Error := " + ar.cause().getMessage());
         responses.putHeader("content-type", "application/json")
           .end(ar.cause().getMessage());
       }

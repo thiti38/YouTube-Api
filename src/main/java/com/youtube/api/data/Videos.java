@@ -4,6 +4,8 @@ import com.youtube.api.validation.MostPopularValidate;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonArray;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.client.HttpRequest;
@@ -13,9 +15,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class Videos {
+  private static Logger logger = LoggerFactory.getLogger(Videos.class.getName());
   public void video(Router router, WebClient client, String API_URL, String API_KEY, SQLClient mySQLClient){
 
     router.get("/videos/:id").handler(routingContext -> {
+      logger.info("Request Api := Videos ID");
       HttpServerResponse responses = routingContext.response();
       String id = routingContext.request().getParam("id");
       String query = "SELECT data FROM videos_list WHERE id=?";
@@ -26,7 +30,6 @@ public class Videos {
           for (JsonArray row : results){
             res = row.getString(0);
           }
-          System.out.println("Succeed to SELECT := " + id);
           responses.putHeader("content-type", "application/json")
             .end(res);
         } else {
@@ -45,6 +48,7 @@ public class Videos {
     });
 
     router.get("/videos/mostPopular/").handler(routingContext -> {
+      logger.info("Request Api := Videos MostPopular");
       HttpRequest<Buffer> request = client.getAbs(API_URL + "videos")
         .addQueryParam("chart", "mostPopular");
       HttpServerResponse responses = routingContext.response();
